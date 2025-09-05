@@ -26,10 +26,10 @@ export interface WebSocketUpdate {
   providedIn: 'root',
 })
 export class WebSocketService {
-  private idleManager = inject(IdleManagerService);
+  private idleManager: IdleManagerService = inject(IdleManagerService);
   private connection: HubConnection | null = null;
   private currentTournamentId: number | null = null;
-  private isIdleDisconnected = false;
+  private isIdleDisconnected: boolean = false;
 
   // Simple state tracking
   private connectionStateSubject = new BehaviorSubject<HubConnectionState>(
@@ -127,15 +127,6 @@ export class WebSocketService {
     } catch (error) {
       console.error('Failed to leave tournament group:', error);
     }
-  }
-
-  // Utility
-  isConnected(): boolean {
-    return this.connection?.state === HubConnectionState.Connected;
-  }
-
-  getCurrentTournamentId(): number | null {
-    return this.currentTournamentId;
   }
 
   // Private Methods

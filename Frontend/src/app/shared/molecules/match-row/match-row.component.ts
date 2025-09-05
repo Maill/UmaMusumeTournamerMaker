@@ -2,13 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BaseBadgeComponent } from '../../atoms/badge/base-badge.component';
 import { BaseIconComponent } from '../../atoms/icon/base-icon.component';
-import { Match, MatchPlayer } from '../../types/tournament.types';
+import { MatchRowData } from '../../types/components.types';
+import { MatchPlayer } from '../../types/tournament.types';
 import { WinnerSelectorComponent } from '../winner-selector/winner-selector.component';
-
-export interface MatchRowData extends Match {
-  matchNumber: number;
-  canManage: boolean;
-}
 
 @Component({
   selector: 'tr[app-match-row]',

@@ -1,12 +1,7 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export interface SelectOption<T = any> {
-  value: T;
-  label: string;
-  disabled?: boolean;
-}
+import { SelectOption } from '../../types/components.types';
 
 @Component({
   selector: 'app-select',
@@ -16,21 +11,21 @@ export interface SelectOption<T = any> {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BaseSelectComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
   template: `
     <div class="select-wrapper">
       @if (label) {
-        <label [for]="selectId" class="select-label">
-          {{ label }}
-          @if (required) {
-            <span class="required-asterisk">*</span>
-          }
-        </label>
+      <label [for]="selectId" class="select-label">
+        {{ label }}
+        @if (required) {
+        <span class="required-asterisk">*</span>
+        }
+      </label>
       }
-      
-      <select 
+
+      <select
         [id]="selectId"
         [class]="getSelectClasses()"
         [disabled]="disabled"
@@ -38,35 +33,29 @@ export interface SelectOption<T = any> {
         [value]="value"
         (change)="onChange($event)"
         (blur)="onBlur($event)"
-        (focus)="onFocus($event)">
-        
+        (focus)="onFocus($event)"
+      >
         @if (placeholder) {
-          <option value="" disabled>{{ placeholder }}</option>
-        }
-        
-        @for (option of options; track option.value) {
-          <option 
-            [value]="option.value"
-            [disabled]="option.disabled || false">
-            {{ option.label }}
-          </option>
+        <option value="" disabled>{{ placeholder }}</option>
+        } @for (option of options; track option.value) {
+        <option [value]="option.value" [disabled]="option.disabled || false">
+          {{ option.label }}
+        </option>
         }
       </select>
-      
+
       @if (error) {
-        <div class="select-error">
-          {{ error }}
-        </div>
-      }
-      
-      @if (helpText && !error) {
-        <div class="select-help">
-          {{ helpText }}
-        </div>
+      <div class="select-error">
+        {{ error }}
+      </div>
+      } @if (helpText && !error) {
+      <div class="select-help">
+        {{ helpText }}
+      </div>
       }
     </div>
   `,
-  styleUrl: './base-select.component.css'
+  styleUrl: './base-select.component.css',
 })
 export class BaseSelectComponent<T = any> implements ControlValueAccessor {
   @Input() label: string = '';
@@ -123,11 +112,11 @@ export class BaseSelectComponent<T = any> implements ControlValueAccessor {
 
   getSelectClasses(): string {
     const classes = ['form-control', 'form-select'];
-    
+
     if (this.error) {
       classes.push('is-invalid');
     }
-    
+
     if (this.disabled) {
       classes.push('disabled');
     }

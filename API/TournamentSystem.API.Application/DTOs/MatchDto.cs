@@ -1,19 +1,28 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UmaMusumeTournamentMaker.API.Application.DTOs
 {
-    public class MatchDto
+    public record MatchDto
     {
-        public int Id { get; set; }
-        public int RoundId { get; set; }
-        public int? WinnerId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? CompletedAt { get; set; }
-        public List<PlayerDto> Players { get; set; } = new();
-        public PlayerDto? Winner { get; set; }
-    }
+        [Required]
+        public int Id { get; init; }
 
-    public class SetWinnerDto
-    {
-        public int WinnerId { get; set; }
-        public string? Password { get; set; }
+        [Required]
+        public int RoundId { get; init; }
+
+        [Required]
+        public int? WinnerId { get; init; }
+
+        [Required]
+        public DateTime CreatedAt { get; init; }
+
+        [Required]
+        public DateTime? CompletedAt { get; init; }
+
+        [Required]
+        public List<PlayerDto> Players { get; init; } = new();
+
+        [Required]
+        public PlayerDto? Winner { get; init; }
     }
 }

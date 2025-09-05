@@ -61,20 +61,27 @@
             </app-badge>
           </div>
         </div>
-
-        <div class="header-actions">
-          @if (!state.managementMode) {
-          <app-button variant="primary" (clicked)="enterManagementMode()">
-            <app-icon name="cog" size="sm"></app-icon>
-            Enter Management
-          </app-button>
-          } @else {
-          <app-button variant="outline-secondary" (clicked)="exitManagementMode()">
-            <app-icon name="eye" size="sm"></app-icon>
-            Exit Management
-          </app-button>
-          }
-        </div>
+      </div>
+      <div class="header-actions">
+        @if (!state.managementMode) {
+        <app-button variant="primary" (clicked)="enterManagementMode()">
+          <app-icon name="cog" size="sm"></app-icon>
+          Enter Management
+        </app-button>
+        } @else {
+        <app-button variant="danger" (clicked)="enterManagementMode()">
+          <app-icon name="delete" size="sm"></app-icon>
+          Delete Tournament
+        </app-button>
+        <app-button variant="secondary" (clicked)="enterManagementMode()">
+          <app-icon name="edit" size="sm"></app-icon>
+          Edit Tournament Name
+        </app-button>
+        <app-button variant="outline-secondary" (clicked)="exitManagementMode()">
+          <app-icon name="eye" size="sm"></app-icon>
+          Exit Management
+        </app-button>
+        }
       </div>
     </div>
 

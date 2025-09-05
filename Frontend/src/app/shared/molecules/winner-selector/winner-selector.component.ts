@@ -2,16 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BaseIconComponent } from '../../atoms/icon/base-icon.component';
-import { BaseSelectComponent, SelectOption } from '../../atoms/select/base-select.component';
+import { BaseSelectComponent } from '../../atoms/select/base-select.component';
+import { SelectOption } from '../../types/components.types';
 import { MatchPlayer } from '../../types/tournament.types';
-
-export interface WinnerSelectorData {
-  matchId: number;
-  players: MatchPlayer[];
-  selectedWinnerId: number | null;
-  disabled: boolean;
-  error: string | null;
-}
 
 @Component({
   selector: 'app-winner-selector',

@@ -58,16 +58,6 @@ namespace UmaMusumeTournamentMaker.API.Application.Services
             return null;
         }
 
-        public Tournament? GetTournamentAndValidatePassword(int id, string? password)
-        {
-            if (_memoryCache.TryGetValue(id, out Tournament? tournament))
-            {
-                tournament.ValidatePassword(password);
-            }
-
-            return tournament;
-        }
-
         public void SetTournament(Tournament tournament)
         {
             if (!_memoryCache.TryGetValue(tournament.Id, out _))

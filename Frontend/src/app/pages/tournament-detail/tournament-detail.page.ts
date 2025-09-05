@@ -4,19 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, Subject, takeUntil } from 'rxjs';
 
 // Import organisms
-import {
-  MatchTableComponent,
-  MatchTableData,
-  MatchTableState,
-} from '../../shared/organisms/match-table/match-table.component';
-import {
-  PlayerManagementComponent,
-  PlayerManagementState,
-} from '../../shared/organisms/player-management/player-management.component';
-import {
-  StandingsTableComponent,
-  StandingsTableData,
-} from '../../shared/organisms/standings-table/standings-table.component';
+import { MatchTableComponent } from '../../shared/organisms/match-table/match-table.component';
+import { PlayerManagementComponent } from '../../shared/organisms/player-management/player-management.component';
+import { StandingsTableComponent } from '../../shared/organisms/standings-table/standings-table.component';
 
 // Import molecules and atoms
 import { BaseBadgeComponent } from '../../shared/atoms/badge/base-badge.component';
@@ -26,27 +16,23 @@ import { LoadingSpinnerComponent } from '../../shared/atoms/spinner/loading-spin
 import { ErrorDisplayComponent } from '../../shared/molecules/error-display/error-display.component';
 
 // Import types and services
-import {
-  PasswordModalComponent,
-  PasswordModalData,
-} from '../../shared/molecules/password-modal/password-modal.component';
+import { PasswordModalComponent } from '../../shared/molecules/password-modal/password-modal.component';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { TournamentService } from '../../shared/services/tournament.service';
 import { WebSocketService, WebSocketUpdate } from '../../shared/services/websocket.service';
+import {
+  MatchTableData,
+  MatchTableState,
+  PlayerManagementState,
+  StandingsTableData,
+  TournamentDetailState,
+} from '../../shared/types/components.types';
 import {
   Round,
   Tournament,
   TournamentStatus,
   TournamentType,
 } from '../../shared/types/tournament.types';
-
-interface TournamentDetailState {
-  tournament: Tournament | null;
-  isLoading: boolean;
-  error: string | null;
-  managementMode: boolean;
-  isUpdating: boolean;
-  passwordModal: PasswordModalData;
-}
 
 @Component({
   selector: 'app-tournament-detail-page',
@@ -70,8 +56,9 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
   // Dependency injection
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private tournamentService = inject(TournamentService);
-  private webSocketService = inject(WebSocketService);
+  private tournamentService: TournamentService = inject(TournamentService);
+  private webSocketService: WebSocketService = inject(WebSocketService);
+  private localStorageService: LocalStorageService = inject(LocalStorageService);
 
   // Component state
   private destroy$ = new Subject<void>();
@@ -149,7 +136,7 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
         next: (tournament: Tournament) => {
           this.state.tournament = tournament;
           // Auto-enter management mode if password is stored
-          if (this.tournamentService.hasPassword(this.tournamentId)) {
+          if (this.localStorageService.hasPassword(this.tournamentId)) {
             this.state.managementMode = true;
           }
           // Initialize WebSocket connection after tournament data is loaded
@@ -170,7 +157,7 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
   // Management mode methods
   enterManagementMode(): void {
     // Check if password is already stored
-    if (this.tournamentService.hasPassword(this.tournamentId)) {
+    if (this.localStorageService.hasPassword(this.tournamentId)) {
       this.state.managementMode = true;
     } else {
       // Show password modal
@@ -190,15 +177,20 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
     this.state.passwordModal.isLoading = true;
     this.state.passwordModal.error = null;
 
+    const request = {
+      tournamentId: this.tournamentId,
+      password,
+    };
+
     this.tournamentService
-      .validatePassword(this.tournamentId, password)
+      .validateTournamentPassword(request)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.state.passwordModal.isLoading = false;
           if (response.isValid) {
             // Password is correct - store it and enter management mode
-            this.tournamentService.setPassword(this.tournamentId, password);
+            this.localStorageService.setPassword(this.tournamentId, password);
             this.state.managementMode = true;
             this.state.passwordModal.isVisible = false;
           } else {
@@ -225,11 +217,13 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
 
     this.state.isUpdating = true;
     const request = {
+      tournamentId: this.tournamentId,
       name: playerName,
+      password: '', //Service will fetch password from localstorage
     };
 
     this.tournamentService
-      .addPlayer(this.tournamentId, request)
+      .addPlayer(request)
       .pipe(
         finalize(() => (this.state.isUpdating = false)),
         takeUntil(this.destroy$)
@@ -253,6 +247,7 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
     const request = {
       tournamentId: this.tournamentId,
       playerId: event.playerId,
+      password: '', //Service will fetch password from localstorage
     };
 
     this.tournamentService
@@ -277,17 +272,9 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
     if (!this.state.tournament) return;
 
     this.state.isUpdating = true;
-    const password = this.tournamentService.getPassword(this.tournamentId);
-    console.log(
-      'Starting tournament:',
-      this.tournamentId,
-      'with password:',
-      password ? 'PROVIDED' : 'NOT PROVIDED'
-    );
-
     const request = {
       tournamentId: this.tournamentId,
-      password: password,
+      password: '',
     };
 
     this.tournamentService
@@ -509,11 +496,6 @@ export class TournamentDetailPageComponent implements OnInit, OnDestroy {
     return this.getCurrentRound()?.roundType == 'Final'
       ? 'Complete Tournament'
       : 'Start Next Round';
-  }
-
-  isLastRound(): boolean {
-    // Tournament-specific logic would go here
-    return false;
   }
 
   getCompletedMatchesInRound(round: Round): number {

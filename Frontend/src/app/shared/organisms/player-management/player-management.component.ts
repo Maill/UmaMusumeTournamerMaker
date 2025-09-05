@@ -4,22 +4,8 @@ import { BaseButtonComponent } from '../../atoms/button/base-button.component';
 import { BaseIconComponent } from '../../atoms/icon/base-icon.component';
 import { ErrorDisplayComponent } from '../../molecules/error-display/error-display.component';
 import { PlayerInputComponent } from '../../molecules/player-input/player-input.component';
+import { PlayerManagementState } from '../../types/components.types';
 import { Player } from '../../types/tournament.types';
-
-export interface PlayerManagementState {
-  isAddingPlayer: boolean;
-  isRemovingPlayer: boolean;
-  isStartingTournament: boolean;
-  canManage: boolean;
-  error: string | null;
-  addPlayerError: string | null;
-}
-
-export interface PlayerAction {
-  type: 'add' | 'remove' | 'start-tournament';
-  playerId?: number;
-  playerName?: string;
-}
 
 @Component({
   selector: 'app-player-management',

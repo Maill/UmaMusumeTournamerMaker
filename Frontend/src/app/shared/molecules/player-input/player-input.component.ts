@@ -12,12 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { BaseButtonComponent } from '../../atoms/button/base-button.component';
 import { BaseInputComponent } from '../../atoms/input/base-input.component';
 
-export interface PlayerInputData {
-  name: string;
-  error: string | null;
-  isLoading: boolean;
-}
-
 @Component({
   selector: 'app-player-input',
   standalone: true,

@@ -66,13 +66,13 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpPost("{id}/players")]
-        public async Task<ActionResult> AddPlayer(int id, AddPlayerDto addPlayerDto)
+        [HttpPost("players")]
+        public async Task<ActionResult> AddPlayer(AddPlayerDto addPlayerDto)
         {
             try
             {
-                var addedPlayer = await _tournamentService.AddPlayerAsync(id, addPlayerDto);
-                await _broadcastService.BroadcastPlayerAdded(id, addedPlayer);
+                var addedPlayer = await _tournamentService.AddPlayerAsync(addPlayerDto);
+                await _broadcastService.BroadcastPlayerAdded(addPlayerDto.TournamentId, addedPlayer);
                 return Ok(new { message = "Player added successfully" });
             }
             catch (ArgumentException ex)
@@ -120,13 +120,13 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpPost("{id}/start")]
-        public async Task<ActionResult> StartTournament(int id, StartTournamentDto startTournamentDto)
+        [HttpPost("start")]
+        public async Task<ActionResult> StartTournament(StartTournamentDto startTournamentDto)
         {
             try
             {
-                var tournament = await _tournamentService.StartTournamentAsync(id, startTournamentDto);
-                await _broadcastService.BroadcastTournamentStarted(id, tournament);
+                var tournament = await _tournamentService.StartTournamentAsync(startTournamentDto);
+                await _broadcastService.BroadcastTournamentStarted(tournament.Id, tournament);
                 return Ok(new { message = "Tournament started successfully" });
             }
             catch (ArgumentException ex)
@@ -147,13 +147,13 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpPost("{id}/next-round")]
-        public async Task<ActionResult> StartNextRound(int id, StartNextRoundDto startNextRoundDto)
+        [HttpPost("next-round")]
+        public async Task<ActionResult> StartNextRound(StartNextRoundDto startNextRoundDto)
         {
             try
             {
-                var tournament = await _tournamentService.StartNextRoundAsync(id, startNextRoundDto);
-                await _broadcastService.BroadcastNewRound(id, tournament);
+                var tournament = await _tournamentService.StartNextRoundAsync(startNextRoundDto);
+                await _broadcastService.BroadcastNewRound(tournament.Id, tournament);
                 return Ok(new { message = "Next round started successfully" });
             }
             catch (ArgumentException ex)
@@ -170,13 +170,14 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<TournamentDto>> UpdateTournament(int id, UpdateTournamentDto updateTournamentDto)
+        [HttpPut]
+        public async Task<ActionResult> UpdateTournament(UpdateTournamentDto updateTournamentDto)
         {
             try
             {
-                var tournament = await _tournamentService.UpdateTournamentAsync(id, updateTournamentDto);
-                return Ok(tournament);
+                var tournament = await _tournamentService.UpdateTournamentAsync(updateTournamentDto);
+                await _broadcastService.BroadcastTournamentUpdated(tournament.Id, tournament);
+                return NoContent();
             }
             catch (ArgumentException ex)
             {
@@ -192,12 +193,12 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteTournament(int id, DeleteTournamentDto deleteTournamentDto)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteTournament(DeleteTournamentDto deleteTournamentDto)
         {
             try
             {
-                var result = await _tournamentService.DeleteTournamentAsync(id, deleteTournamentDto);
+                var result = await _tournamentService.DeleteTournamentAsync(deleteTournamentDto);
                 if (!result)
                     return NotFound(new { message = "Tournament not found" });
 
@@ -213,21 +214,21 @@ namespace UmaMusumeTournamentMaker.API.Presentation.Controllers
             }
         }
 
-        [HttpPost("{id}/validate-password")]
-        public async Task<ActionResult> ValidatePassword(int id, ValidatePasswordDto validatePasswordDto)
+        [HttpPost("validate-password")]
+        public async Task<ActionResult> ValidatePassword(ChallengePasswordDto validatePasswordDto)
         {
             try
             {
-                var isValid = await _tournamentService.ValidatePasswordAsync(id, validatePasswordDto.Password);
-
-                if (isValid)
-                {
-                    return Ok(new { message = "Password is valid", isValid = true });
-                }
-                else
-                {
-                    return Unauthorized(new { message = "Invalid password", isValid = false });
-                }
+                await _tournamentService.ChallengePasswordAsync(validatePasswordDto);
+                return Ok(new { message = "Password is valid", isValid = true });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
             }
             catch (Exception ex)
             {

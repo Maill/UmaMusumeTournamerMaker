@@ -13,8 +13,6 @@ namespace UmaMusumeTournamentMaker.API.Application.Interfaces
 
         Tournament? GetTournament(int id);
 
-        Tournament? GetTournamentAndValidatePassword(int id, string? password);
-
         bool AddPlayerToTournament(int tournamentId, Player player);
 
         bool RemovePlayerFromTournament(int tournamentId, int id);

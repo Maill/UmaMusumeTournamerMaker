@@ -71,11 +71,5 @@ namespace UmaMusumeTournamentMaker.API.Infrastructure.Repositories
             _context.Tournaments.Remove(tournament);
             return true;
         }
-
-        public async Task VerifyPasswordAsync(int tournamentId, string? password)
-        {
-            var tournament = await _context.Tournaments.FindAsync(tournamentId);
-            tournament.ValidatePassword(password);
-        }
     }
 }

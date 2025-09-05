@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface IdleState {
-  isIdle: boolean;
-  reason: 'tab-hidden' | 'user-inactive' | null;
-  tournamentId: number | null;
-}
+import { IdleState } from '../types/service.types';
 
 @Injectable({
   providedIn: 'root',

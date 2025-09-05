@@ -1,17 +1,40 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UmaMusumeTournamentMaker.API.Application.DTOs
 {
-    public class PlayerDto
+    public record PlayerDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int Points { get; set; }
-        public int RoundWins { get; set; }
-        public int RoundLosses { get; set; }
-        public string Group { get; set; } = string.Empty;
-        public double WinRate { get; set; }
-        public int TotalMatches { get; set; }
-        public int RoundMatches { get; set; }
+        [Required]
+        public int Id { get; init; }
+
+        [Required]
+        public string Name { get; init; } = string.Empty;
+
+        [Required]
+        public int Wins { get; init; }
+
+        [Required]
+        public int Losses { get; init; }
+
+        [Required]
+        public int Points { get; init; }
+
+        [Required]
+        public int RoundWins { get; init; }
+
+        [Required]
+        public int RoundLosses { get; init; }
+
+        [Required]
+        public string Group { get; init; } = string.Empty;
+
+        [Required]
+        public double WinRate { get; init; }
+
+        [Required]
+        public int TotalMatches { get; init; }
+
+        [Required]
+        public int RoundMatches { get; init; }
     }
 }

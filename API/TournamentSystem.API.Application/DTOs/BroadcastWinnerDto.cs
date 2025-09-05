@@ -2,15 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UmaMusumeTournamentMaker.API.Application.DTOs
 {
-    public class BroadcastWinnerDto
+    public record BroadcastWinnerDto
     {
         [Required]
-        public int TournamentId { get; set; }
+        public int TournamentId { get; init; }
 
         [Required]
-        public int MatchId { get; set; }
+        public int MatchId { get; init; }
 
         [Required]
-        public int WinnerId { get; set; }
+        public int WinnerId { get; init; }
     }
 }

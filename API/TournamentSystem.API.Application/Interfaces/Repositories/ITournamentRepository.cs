@@ -42,10 +42,5 @@ namespace UmaMusumeTournamentMaker.API.Application.Interfaces.Repositories
         /// Deletes a tournament with all related data
         /// </summary>
         Task<bool> DeleteAsync(int id);
-
-        /// <summary>
-        /// Verifies tournament password for access control
-        /// </summary>
-        Task VerifyPasswordAsync(int tournamentId, string? password);
     }
 }

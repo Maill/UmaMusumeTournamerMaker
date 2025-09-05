@@ -1,48 +1,39 @@
+using System.ComponentModel.DataAnnotations;
 using UmaMusumeTournamentMaker.API.Domain.Enums;
 
 namespace UmaMusumeTournamentMaker.API.Application.DTOs
 {
-    public class TournamentDto
+    public record TournamentDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public TournamentType Type { get; set; }
-        public TournamentStatus Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? StartedAt { get; set; }
-        public DateTime? CompletedAt { get; set; }
-        public int CurrentRound { get; set; }
-        public int? WinnerId { get; set; }
-        public List<PlayerDto> Players { get; set; } = new();
-        public List<RoundDto> Rounds { get; set; } = new();
-    }
+        [Required]
+        public int Id { get; init; }
 
-    public class CreateTournamentDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public TournamentType Type { get; set; }
-        public string? Password { get; set; }
-    }
+        [Required]
+        public string Name { get; init; } = string.Empty;
 
-    public class AddPlayerDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string? Password { get; set; }
-    }
+        [Required]
+        public TournamentType Type { get; init; }
 
-    public class UpdateTournamentDto
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+        [Required]
+        public TournamentStatus Status { get; init; }
 
-    public class DeleteTournamentDto
-    {
-        public string Password { get; set; } = string.Empty;
-    }
+        [Required]
+        public DateTime CreatedAt { get; init; }
 
-    public class StartTournamentDto
-    {
-        public string? Password { get; set; }
+        [Required]
+        public DateTime? StartedAt { get; init; }
+
+        [Required]
+        public DateTime? CompletedAt { get; init; }
+
+        [Required]
+        public int CurrentRound { get; init; }
+
+        [Required]
+        public int? WinnerId { get; init; }
+
+        public List<PlayerDto> Players { get; init; } = new();
+        
+        public List<RoundDto> Rounds { get; init; } = new();
     }
 }

@@ -11,8 +11,8 @@ import { TournamentCardSkeletonComponent } from '../../shared/molecules/tourname
 import { TournamentCardComponent } from '../../shared/molecules/tournament-card/tournament-card.component';
 
 // Import types and services
-import { TournamentCardData } from '../../shared/molecules/tournament-card/tournament-card.component';
 import { TournamentService } from '../../shared/services/tournament.service';
+import { TournamentCardData } from '../../shared/types/components.types';
 import {
   TournamentListItem,
   TournamentStatus,

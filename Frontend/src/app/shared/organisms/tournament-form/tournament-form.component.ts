@@ -3,21 +3,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseButtonComponent } from '../../atoms/button/base-button.component';
 import { BaseInputComponent } from '../../atoms/input/base-input.component';
-import { BaseSelectComponent, SelectOption } from '../../atoms/select/base-select.component';
+import { BaseSelectComponent } from '../../atoms/select/base-select.component';
 import { ErrorDisplayComponent } from '../../molecules/error-display/error-display.component';
-import { CreateTournamentRequest, TournamentType } from '../../types/tournament.types';
-
-export interface TournamentFormData {
-  name: string;
-  type: TournamentType;
-  password?: string;
-}
-
-export interface TournamentFormState {
-  isLoading: boolean;
-  error: string | null;
-  showPassword: boolean;
-}
+import { CreateTournamentRequest } from '../../types/api.types';
+import {
+  SelectOption,
+  TournamentFormData,
+  TournamentFormState,
+} from '../../types/components.types';
+import { TournamentType } from '../../types/tournament.types';
 
 @Component({
   selector: 'app-tournament-form',

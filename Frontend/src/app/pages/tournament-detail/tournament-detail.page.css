@@ -56,7 +56,7 @@
 }
 
 .header-main {
-  padding: 2rem;
+  padding: 2rem 2rem 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,6 +91,19 @@
 
 .header-actions {
   flex-shrink: 0;
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+.header-actions app-button {
+  display: contents;
+}
+
+.header-actions ::ng-deep button {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Tournament Body */

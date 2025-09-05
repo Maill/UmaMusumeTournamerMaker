@@ -6,21 +6,7 @@ import { BaseIconComponent, IconName } from '../../atoms/icon/base-icon.componen
 import { LoadingSpinnerComponent } from '../../atoms/spinner/loading-spinner.component';
 import { ErrorDisplayComponent } from '../../molecules/error-display/error-display.component';
 import { MatchRowComponent } from '../../molecules/match-row/match-row.component';
-import { Round } from '../../types/tournament.types';
-
-export interface MatchTableData {
-  round: Round;
-  canManage: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
-
-export interface MatchTableState {
-  updatingMatchId: number | null;
-  canStartNextRound: boolean;
-  isStartingNextRound: boolean;
-  nextRoundButtonText: string;
-}
+import { MatchTableData, MatchTableState } from '../../types/components.types';
 
 @Component({
   selector: 'app-match-table',

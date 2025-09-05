@@ -4,17 +4,8 @@ import { BaseIconComponent, IconName } from '../../atoms/icon/base-icon.componen
 import { LoadingSpinnerComponent } from '../../atoms/spinner/loading-spinner.component';
 import { ErrorDisplayComponent } from '../../molecules/error-display/error-display.component';
 import { StandingsRowComponent } from '../../molecules/standings-row/standings-row.component';
+import { StandingsTableData } from '../../types/components.types';
 import { Player } from '../../types/tournament.types';
-
-export interface StandingsTableData {
-  players: Player[];
-  isLoading: boolean;
-  error: string | null;
-  tournamentComplete: boolean;
-  winnerId?: number;
-  winnerName?: string;
-  totalGames: number;
-}
 
 export type StandingsViewMode = 'current' | 'final' | 'live';
 

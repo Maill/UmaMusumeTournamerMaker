@@ -52,20 +52,6 @@ export interface Tournament {
   password?: string;
 }
 
-export interface CreateTournamentRequest {
-  name: string;
-  type: TournamentType;
-  password?: string;
-}
-
-export interface AddPlayerRequest {
-  name: string;
-}
-
-export interface UpdateMatchWinnerRequest {
-  winnerId: number;
-}
-
 export interface TournamentListItem {
   id: number;
   name: string;
@@ -74,16 +60,4 @@ export interface TournamentListItem {
   playersCount: number;
   currentRound: number;
   createdAt: Date;
-}
-
-export type TournamentFormData = Omit<CreateTournamentRequest, 'type'> & {
-  type: TournamentType;
-};
-
-export interface PasswordModalData {
-  isVisible: boolean;
-  title: string;
-  message: string;
-  isLoading: boolean;
-  error: string | null;
 }

@@ -2,14 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { BaseBadgeComponent } from '../../atoms/badge/base-badge.component';
 import { BaseIconComponent } from '../../atoms/icon/base-icon.component';
-import { Player } from '../../types/tournament.types';
-
-export interface StandingsRowData extends Player {
-  rank: number;
-  isChampion?: boolean;
-  isRunnerUp?: boolean;
-  isThirdPlace?: boolean;
-}
+import { StandingsRowData } from '../../types/components.types';
 
 @Component({
   selector: 'tr[app-standings-row]',
